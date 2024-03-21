@@ -1,3 +1,59 @@
+## 1.8.3 (2024-03-20)
+
+#### New Features
+* Restored integration with MixewayVulnerabilityAuditor
+
+#### Bug Fixes
+* Fixed bug that prevents dependency track vulnerabilities to being loaded
+* Fixed bug stacktrace errors complaining about missing column password in table bugtracker
+* Fixed bug with nexus-iq integration that detect vulnerabilities in null:null packages
+
+## 1.8.0 (2023-08-08)
+
+#### New Features
+* Enabled hibernate envers for projectvulnerability table
+* added endpoint with more detailed statistics for both project and vulnerabilities discovered within project
+
+#### Bug Fixes
+* Fixed bug when some vulnerabilities status was not managed properly
+* Fixed bug with Checkmarx integration
+
+## 1.7.2 (19.06.2023)
+
+### New Features
+* Added ZAP DAST scanner integration
+
+## 1.7.1 (2023-01-23)
+
+#### New Features
+* New API and methods to show simplified statistic page
+
+## 1.7.0 (2023-01-23)
+
+#### Bug Fixes
+* Fixed bug with ambitious responses from requesting infrastructure scan
+* Fixed bug with caused sometimes failure in creating synchronization with SCA
+
+#### New Features
+* Nexus-IQ Integration
+
+
+## 1.6.3 (2022-07-28)
+
+#### Bug Fixes
+* Fixing Checkmarx integration
+
+#### New Features
+* Adding global statistics for admin acceess
+
+
+## 1.6.1 (2022-05-07)
+
+#### Bug Fixes
+* Fixed bug that allow to perform multiple sast scans of same project. Fixed status management, now when specific codeproject has inqueue or running state equal to true, it cannot be put on queue
+
+
+
 <a name="1.3.0"></a>
 ## 1.3.0 (2020-05-31)
 

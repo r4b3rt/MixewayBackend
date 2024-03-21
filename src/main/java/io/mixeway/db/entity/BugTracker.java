@@ -27,6 +27,7 @@ public class BugTracker {
     private String autoStrategy;
     private String asignee;
     private Proxies proxies;
+    private String epic;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "proxies_id", nullable = true)
@@ -74,7 +75,7 @@ public class BugTracker {
     }
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "bugtracker_id", nullable = false)
+    @JoinColumn(name = "bugtrackertype_id", nullable = false)
     public BugTrackerType getBugTrackerType() {
         return bugTrackerType;
     }
@@ -99,6 +100,7 @@ public class BugTracker {
         this.username = username;
     }
 
+    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -131,5 +133,13 @@ public class BugTracker {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public String getEpic() {
+        return epic;
+    }
+
+    public void setEpic(String epic) {
+        this.epic = epic;
     }
 }

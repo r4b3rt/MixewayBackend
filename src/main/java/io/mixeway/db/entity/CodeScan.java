@@ -4,6 +4,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Entity
 @EntityScan
@@ -11,11 +13,23 @@ import javax.persistence.*;
 @EntityListeners(AuditingEntityListener.class)
 public class CodeScan {
     private Long id;
-    private CodeGroup codeGroup;
     private CodeProject codeProject;
     private String inserted;
     private boolean inQueue;
     private boolean running;
+    private String updated;
+
+    public CodeScan(CodeProject codeProject){
+        this.codeProject = codeProject;
+    }
+    @Column(name = "updated")
+    public String getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(String updated) {
+        this.updated = updated;
+    }
 
     public boolean isRunning() {
         return running;
@@ -23,16 +37,6 @@ public class CodeScan {
 
     public void setRunning(boolean running) {
         this.running = running;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "codegroup_id", nullable = false)
-    public CodeGroup getCodeGroup() {
-        return codeGroup;
-    }
-
-    public void setCodeGroup(CodeGroup codeGroup) {
-        this.codeGroup = codeGroup;
     }
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "codeproject_id", nullable = false)
@@ -68,5 +72,17 @@ public class CodeScan {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+
+    @PrePersist
+    public void setInsertedDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.inserted = sdf.format(new Date());
+    }
+    @PreUpdate
+    public void setUpdatedDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.updated = sdf.format(new Date());
     }
 }

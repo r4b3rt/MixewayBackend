@@ -4,7 +4,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import io.mixeway.pojo.VulnSource;
+import io.mixeway.utils.VulnSource;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -36,7 +36,6 @@ public class WebApp implements VulnSource {
 	@JsonIgnore private Boolean inQueue;
 	private String lastscan;
 	@JsonIgnore private String inserted;
-	@JsonIgnore private CodeGroup codeGroup;
 	@JsonIgnore private CodeProject codeProject;
 	@JsonIgnore private Boolean autoStart;
 	@JsonIgnore private String requestId;
@@ -125,15 +124,6 @@ public class WebApp implements VulnSource {
 		this.autoStart = autoStart;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "codegroup_id", nullable = true)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-	public CodeGroup getCodeGroup() {
-		return codeGroup;
-	}
-	public void setCodeGroup(CodeGroup codeGroup) {
-		this.codeGroup = codeGroup;
-	}
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "codeproject_id", nullable = true)
     @OnDelete(action = OnDeleteAction.CASCADE)

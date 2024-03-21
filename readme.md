@@ -10,6 +10,7 @@
 Mixeway is an OpenSource software that is meant to simplify the process of security assurance of projects which are implemented using CICD procedures. **Mixawey is not another vulnerability scanning
 software - it is security orchestration tool**.
 
+
 With number of plugins for Vulnerability Scanners :
 <img src="https://mixeway.github.io/img/nessus.png" height="50px">
 <img src="https://mixeway.github.io/img/openvas.jpg" height="50px">
@@ -96,3 +97,33 @@ java -jar --server.ssl.trust-store=/etc/pki/cacerts \
           --spring.cloud.vault.host=MixerVault
 ```
  REST API will be exposed on port `:8443`
+
+## Auth methods
+Mixeway supports multiple authentication methods:
+
+* GitHub OAuth
+* Facebook OAuth
+* Keycloak OAuth
+* x509 Smart Cards
+
+### GitHub OAuth
+In order to enable GitHub OAuth make sure to properly register mixeway application at GitHub and then set variable:
+
+* `GITHUB_APP_ID`
+* `GITHUB_SECRET`
+
+### Facebook SSO
+In order to enable Facebook OAuth make sure to properly register mixeway application at Facebook and then set variable:
+
+* `FACEBOOK_APP_ID`
+* `FACEBOOK_SECRET`
+
+### Keycloak SSO
+In order to enable Facebook OAuth make sure to properly register mixeway application at Facebook and then set variable:
+
+* `KEYCLOAK_REALM`
+* `KEYCLOAK_URL` (ending with `/auth`)
+* `KEYCLOAK_CLIENT_ID`
+* `KEYCLOAK_SECRET`xq
+* `KEYCLOAK_AUTH_ROLE`
+* 

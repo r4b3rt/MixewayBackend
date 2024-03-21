@@ -5,7 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import io.mixeway.pojo.VulnSource;
+import io.mixeway.utils.VulnSource;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -22,9 +22,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 		})@EntityListeners(AuditingEntityListener.class)
 public class CodeProject implements VulnSource {
 	private Long id;
-	private CodeGroup codeGroup;
 	private String name;
 	private String dTrackUuid;
+	private String remotename;
 	@JsonIgnore private Set<ProjectVulnerability> vulns;
 	@JsonIgnore private String commitid;
 	@JsonIgnore private String repoUrl;
@@ -33,14 +33,115 @@ public class CodeProject implements VulnSource {
 	@JsonIgnore private String technique;
 	@JsonIgnore private Boolean skipAllScan;
 	@JsonIgnore private String additionalPath;
-	@JsonIgnore private Boolean inQueue;
+	@JsonIgnore private boolean inQueue;
+	@JsonIgnore private Set<CodeProjectBranch> branches;
 	@JsonIgnore private Set<SoftwarePacket> softwarePackets;
 	private String branch;
-	@JsonIgnore private String requestId;
+	@JsonIgnore
+	private String requestId;
 	private int risk;
 	private Boolean enableJira;
+	@JsonIgnore
+	private int versionIdAll;
+	@JsonIgnore
+	private int versionIdsingle;
+	@JsonIgnore
+	private String jobId;
+	@JsonIgnore
+	private String scanid;
+	@JsonIgnore private String scope;
+	@JsonIgnore private int remoteid;
+	private String appClient;
+	private String activeBranch;
+
+	@JsonIgnore
+	private Project project;
+
+	@Column(name="activebranch")
+	public String getActiveBranch() {
+		return activeBranch;
+	}
+
+	public void setActiveBranch(String activeBranch) {
+		this.activeBranch = activeBranch;
+	}
+
+	public String getRemotename() {
+		return remotename;
+	}
+
+	public void setRemotename(String remotename) {
+		this.remotename = remotename;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+
+	@Column(name="versionidall")
+	public int getVersionIdAll() {
+		return versionIdAll;
+	}
+
+	public void setVersionIdAll(int versionIdAll) {
+		this.versionIdAll = versionIdAll;
+	}
+
+	@Column(name="versionidsingle")
+	public int getVersionIdsingle() {
+		return versionIdsingle;
+	}
+
+	public void setVersionIdsingle(int versionIdsingle) {
+		this.versionIdsingle = versionIdsingle;
+	}
+
+	@Column(name="jobid")
+	public String getJobId() {
+		return jobId;
+	}
+
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
+	}
+
+
+	public String getScanid() {
+		return scanid;
+	}
+
+	public void setScanid(String scanid) {
+		this.scanid = scanid;
+	}
+
+	public String getScope() {
+		return scope;
+	}
+
+	public void setScope(String scope) {
+		this.scope = scope;
+	}
+
+	public int getRemoteid() {
+		return remoteid;
+	}
+
+	public void setRemoteid(int remoteid) {
+		this.remoteid = remoteid;
+	}
+
+	@Column(name="appclient")
+	public String getAppClient() {
+		return appClient;
+	}
+
+	public void setAppClient(String appClient) {
+		this.appClient = appClient;
+	}
+
 	@Column(name = "enablejira")
-	public Boolean isEnableJira() {
+	public Boolean getEnableJira() {
 		return enableJira;
 	}
 
@@ -51,13 +152,24 @@ public class CodeProject implements VulnSource {
 	/**
 	 * For CICD
 	 */
-	public CodeProject(String projectName, String branch, CodeGroup codeGroup, String commitid) {
+	public CodeProject(String projectName, String branch, String commitid) {
 		this.name = projectName;
 		this.branch = branch;
-		this.codeGroup = codeGroup;
 		this.commitid = commitid;
 		this.skipAllScan = true;
 		this.inQueue = false;
+
+	}
+	public CodeProject(Project project, String projectName, String branch, String commitid, String repoUrl, String repoUsername, String repoPassword) {
+		this.project = project;
+		this.name = projectName;
+		this.branch = branch;
+		this.commitid = commitid;
+		this.skipAllScan = true;
+		this.inQueue = false;
+		this.repoUrl = repoUrl;
+		this.repoUsername = repoUsername;
+		this.repoPassword = repoPassword;
 
 	}
 
@@ -95,7 +207,7 @@ public class CodeProject implements VulnSource {
 		return branch;
 	}
 
-	public void setBranch(String branch) {
+	protected void setBranch(String branch) {
 		this.branch = branch;
 	}
 
@@ -111,22 +223,29 @@ public class CodeProject implements VulnSource {
 		this.softwarePackets = softwarePackets;
 	}
 
-	private Boolean running;
+	private boolean running;
 
-	public Boolean getRunning() {
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "project_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	public Project getProject() {
+		return project;
+	}
+
+	public boolean getRunning() {
 		return running;
 	}
 
-	public void setRunning(Boolean running) {
+	public void setRunning(boolean running) {
 		this.running = running;
 	}
 
 	@Column(name = "inqueue")
-	public Boolean getInQueue() {
+	public boolean getInQueue() {
 		return inQueue;
 	}
 
-	public void setInQueue(Boolean inQueue) {
+	public void setInQueue(boolean inQueue) {
 		this.inQueue = inQueue;
 	}
 
@@ -198,15 +317,6 @@ public class CodeProject implements VulnSource {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "codegroup_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-	public CodeGroup getCodeGroup() {
-		return codeGroup;
-	}
-	public void setCodeGroup(CodeGroup codeGroup) {
-		this.codeGroup = codeGroup;
-	}
 	public String getName() {
 		return name;
 	}
@@ -217,20 +327,22 @@ public class CodeProject implements VulnSource {
 	public Set<ProjectVulnerability> getVulns() {
 		return vulns;
 	}
+
+	@OneToMany(mappedBy = "codeProject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	public Set<CodeProjectBranch> getBranches() {
+		return branches;
+	}
+
+	public void setBranches(Set<CodeProjectBranch> branches) {
+		this.branches = branches;
+	}
+
 	public void setVulns(Set<ProjectVulnerability> vulns) {
 		this.vulns = vulns;
 	}
 
-
-	@PreUpdate
-	void preUpdate(){
-		if (running == null)
-			running = false;
-	}
 	@PrePersist
 	void prePersist(){
-		if (running == null)
-			running = false;
 		if (enableJira==null)
 			enableJira=false;
 	}

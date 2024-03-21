@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import io.mixeway.db.entity.Project;
 import io.mixeway.db.entity.User;
-import io.mixeway.pojo.BarChartProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,4 +33,11 @@ public interface ProjectRepository extends JpaRepository<Project, Long>{
 	List<Project> findByEnableVulnManage(boolean vulnManage);
 	@Query(value = "select distinct p from Project p, Asset a, Interface i where i.scanRunning=true and i.asset=a and a.project=p")
 	List<Project> getProjectWithInterfaceRunning();
+
+	@Query(value = "select p from Project p where exists (select 1 from ProjectVulnerability pv where pv.project=p and pv.codeProject is not null)")
+	List<Project> getProjectsWithoutCodeVulns();
+
+	@Query(value="select distinct(p.id) from project p, asset a, interface i where p.id=a.project_id and i.asset_id=a.id and i.scanrunning=true", nativeQuery = true)
+	List<Long> getProjectIdWithScanRunningOnInterface();
+
 }

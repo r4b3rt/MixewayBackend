@@ -170,8 +170,10 @@ public class Constants {
     public static final String STATUS_QUEUED = "In Queue";
 
 	public static final String ROLE_USER = "ROLE_USER";
+	public static final String ROLE_PROJECT_OWNER = "ROLE_PROJECT_OWNER";
 	public static final String ROLE_EDITOR_RUNNER = "ROLE_EDITOR_RUNNER";
 	public static final String ROLE_ADMIN = "ROLE_ADMIN";
+
 	public static final String API_URL="api";
 	public static final String KOORDYNATOR_API_URL = "koordynator";
 	public static final String SCANMANAGE_API = "scanmanage";
@@ -194,6 +196,7 @@ public class Constants {
     public static final String SCANNER_TYPE_DEPENDENCYTRACK = "OWASP Dependency Track";
     public static final String DTRACK_AUTH_HEADER = "X-Api-Key";
     public static final String SCANNER_TYPE_CHECKMARX = "Checkmarx";
+    public static final String SCANNER_TYPE_NEXUS_IQ = "Nexus-IQ";
 
     //Checmkarx
 	public static final String CHECKMARX_LOGIN_FORM_USERNAME = "username";
@@ -258,7 +261,7 @@ public class Constants {
     public static final String BURP_SCAN_RUNNING = "RUNNING";
 	public static final String BURP_SCAN_QUEUED = "QUEUED";
 	public static final String BURP_CONFIG_CRAWL = "Crawl strategy - fastest";
-	public static final String BURP_CONFIG_AUDIT = "Audit checks - medium active";
+	public static final String BURP_CONFIG_AUDIT = "Audit checks - light active";
     public static final String BURP_NAMED_CONFIGURATION = "NamedConfiguration";
 	public static final String BURP_STATUS_FAILED = "failed";
 	public static final String BURP_STATUS_SUCCEEDED = "succeeded";
@@ -296,6 +299,18 @@ public class Constants {
     public static final String SKIP_VULENRABILITY = "skip";
     public static final String STATUS_QUEUEDGVM = "Queued";
     public static final String DUMMY_PASSWORD2 = "******";
+    public static final String ADMIN_USERNAME = "admin";
+    public static final String NOT_OK = "Not Ok";
+    public static final String OK = "Ok";
+    public static final String CIID_NONE = "none";
+    public static final String CX_STATUS_FAILED = "Failed";
+    public static final String NEXUS_STAGE_BUILD = "build";
+    public static final String NEXUS_STAGE_SOURCE = "source";
+    public static final String NPM = "npm";
+    public static final String NEXUS_SEVERITY_SEVERE = "Severe";
+    public static final String NEXUS_SEVERITY_MODERATE = "Moderate";
+    public static final String VULNEARBILITY_SOURCE_IAC = "IaC";
+    public static final String VULNERABILITY_HTTP_SERVER_DETECTED = "HTTP Server type and version";
 }
 
 
